@@ -325,6 +325,19 @@ func barOverlap() *charts.Bar {
 	bar := charts.NewBar()
 	bar.SetGlobalOptions(
 		charts.WithTitleOpts(opts.Title{Title: "overlap rect-charts"}),
+		charts.WithToolboxOpts(opts.Toolbox{
+			Show:   true,
+			Orient: "horizontal",
+			Left:   "right",
+			Feature: &opts.ToolBoxFeature{
+				SaveAsImage: &opts.ToolBoxFeatureSaveAsImage{
+					Show: true, Title: "Save as image"},
+				Restore: &opts.ToolBoxFeatureRestore{
+					Show: true, Title: "Reset"},
+			}}),
+		charts.WithTooltipOpts(opts.Tooltip{
+			Show: true,
+		}),
 	)
 
 	bar.SetXAxis(weeks).
@@ -334,8 +347,19 @@ func barOverlap() *charts.Bar {
 			opts.MarkLineNameTypeItem{Name: "Maximum", Type: "max"},
 			opts.MarkLineNameTypeItem{Name: "Avg", Type: "average"},
 		))
-	bar.Overlap(lineBase())
-	bar.Overlap(scatterBase())
+	bar.ExtendYAxis(opts.YAxis{
+		Name:      "Users",
+		Type:      "value",
+		Show:      true,
+		Min:       0,
+		Max:       900,
+		GridIndex: 0,
+	})
+	line := lineBase()
+	line.SetSeriesOptions(charts.WithLineChartOpts(opts.LineChart{YAxisIndex: 1}))
+	// line.SetSeriesOptions(charts.WithBarChartOpts(opts.BarChart{YAxisIndex: 1}))
+	bar.Overlap(line)
+	// bar.Overlap(scatterBase())
 	return bar
 }
 

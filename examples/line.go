@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	itemCntLine = 6
+	itemCntLine = 7
 	fruits      = []string{"Apple", "Banana", "Peach ", "Lemon", "Pear", "Cherry"}
 )
 
@@ -35,10 +35,12 @@ func lineBase() *charts.Line {
 	line := charts.NewLine()
 	line.SetGlobalOptions(
 		charts.WithTitleOpts(opts.Title{Title: "basic line example", Subtitle: "This is the subtitle."}),
+		charts.WithTooltipOpts(opts.Tooltip{Show: true}),
 	)
 
-	line.SetXAxis(fruits).
-		AddSeries("Category A", generateLineItems())
+	line.SetXAxis([]string{"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"}).
+		AddSeries("Category A", generateLineItems()) // charts.WithLineChartOpts(opts.LineChart{YAxisIndex: 1}),
+
 	return line
 }
 
@@ -184,6 +186,10 @@ func lineOverlap() *charts.Line {
 	line := charts.NewLine()
 	line.SetGlobalOptions(
 		charts.WithTitleOpts(opts.Title{Title: "overlap rect-charts"}),
+		charts.WithTooltipOpts(opts.Tooltip{
+			Show:    true,
+			Trigger: "item",
+		}),
 	)
 
 	line.SetXAxis(fruits).
